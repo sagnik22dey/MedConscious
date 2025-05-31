@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from "react";
 import {
   View,
   Text,
@@ -9,19 +9,23 @@ import {
   SafeAreaView,
   KeyboardAvoidingView,
   Platform,
-} from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { MaterialIcon } from '../components/MaterialIcon';
-import { ChatBubble, TypingIndicator } from '../components/ChatBubble';
-import { useSpeechRecognition } from '../hooks/useSpeechRecognition';
-import { useAppContext } from '../context/AppContext';
-import { generateAIResponse, createMessage, getTypingDuration } from '../utils/aiResponses';
-import { ChatMessage } from '../types';
+} from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { MaterialIcon } from "../components/MaterialIcon";
+import { ChatBubble, TypingIndicator } from "../components/ChatBubble";
+import { useSpeechRecognition } from "../hooks/useSpeechRecognition";
+import { useAppContext } from "../context/AppContext";
+import {
+  generateAIResponse,
+  createMessage,
+  getTypingDuration,
+} from "../utils/aiResponses";
+import { ChatMessage } from "../types";
 
 export function ChatScreen() {
   const navigation = useNavigation();
   const { state, dispatch } = useAppContext();
-  const [inputText, setInputText] = useState('');
+  const [inputText, setInputText] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const flatListRef = useRef<FlatList>(null);
 
@@ -31,13 +35,13 @@ export function ChatScreen() {
       sendMessage(result.transcript);
     },
     onError: (error) => {
-      console.error('Speech recognition error:', error);
-      dispatch({ type: 'SET_CHAT_RECORDING', payload: false });
+      console.error("Speech recognition error:", error);
+      dispatch({ type: "SET_CHAT_RECORDING", payload: false });
     },
   });
 
   useEffect(() => {
-    dispatch({ type: 'SET_CHAT_RECORDING', payload: isListening });
+    dispatch({ type: "SET_CHAT_RECORDING", payload: isListening });
   }, [isListening]);
 
   useEffect(() => {
@@ -54,11 +58,11 @@ export function ChatScreen() {
     if (!message) return;
 
     // Add user message
-    const userMessage = createMessage(message, 'user');
-    dispatch({ type: 'ADD_MESSAGE', payload: userMessage });
+    const userMessage = createMessage(message, "user");
+    dispatch({ type: "ADD_MESSAGE", payload: userMessage });
 
     // Clear input
-    setInputText('');
+    setInputText("");
 
     // Show typing indicator
     setIsTyping(true);
@@ -67,8 +71,8 @@ export function ChatScreen() {
     setTimeout(() => {
       setIsTyping(false);
       const aiResponse = generateAIResponse(message);
-      const aiMessage = createMessage(aiResponse, 'ai');
-      dispatch({ type: 'ADD_MESSAGE', payload: aiMessage });
+      const aiMessage = createMessage(aiResponse, "ai");
+      dispatch({ type: "ADD_MESSAGE", payload: aiMessage });
     }, getTypingDuration());
   };
 
@@ -100,19 +104,19 @@ export function ChatScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity 
+        <TouchableOpacity
           style={styles.backButton}
           onPress={() => navigation.goBack()}
         >
           <MaterialIcon name="arrow-back-ios" size={20} color="#FFFFFF" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Chat</Text>
+        <Text style={styles.headerTitle}>Med-Conscious Chat</Text>
         <View style={styles.headerRight} />
       </View>
 
-      <KeyboardAvoidingView 
+      <KeyboardAvoidingView
         style={styles.content}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
         <FlatList
           ref={flatListRef}
@@ -133,8 +137,8 @@ export function ChatScreen() {
               value={inputText}
               onChangeText={setInputText}
               placeholder={
-                state.isChatRecording 
-                  ? "Listening..." 
+                state.isChatRecording
+                  ? "Listening..."
                   : "Type or say something..."
               }
               placeholderTextColor="#ababab"
@@ -150,10 +154,10 @@ export function ChatScreen() {
               ]}
               onPress={handleMicPress}
             >
-              <MaterialIcon 
-                name="mic" 
-                size={20} 
-                color={state.isChatRecording ? "#dc2626" : "#ababab"} 
+              <MaterialIcon
+                name="mic"
+                size={20}
+                color={state.isChatRecording ? "#dc2626" : "#ababab"}
               />
             </TouchableOpacity>
           </View>
@@ -176,28 +180,29 @@ export function ChatScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#141414',
+    backgroundColor: "#141414",
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     paddingHorizontal: 16,
     paddingVertical: 12,
+    paddingTop: 35,
     borderBottomWidth: 1,
-    borderBottomColor: '#303030',
+    borderBottomColor: "#303030",
   },
   backButton: {
     width: 40,
     height: 40,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   headerTitle: {
     flex: 1,
     fontSize: 18,
-    fontWeight: '600',
-    color: '#FFFFFF',
-    textAlign: 'center',
+    fontWeight: "600",
+    color: "#FFFFFF",
+    textAlign: "center",
   },
   headerRight: {
     width: 40,
@@ -212,7 +217,7 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   welcomeContainer: {
-    alignItems: 'center',
+    alignItems: "center",
     paddingVertical: 40,
     paddingHorizontal: 20,
   },
@@ -220,36 +225,36 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: '#505050',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#505050",
+    alignItems: "center",
+    justifyContent: "center",
     marginBottom: 16,
   },
   welcomeTitle: {
     fontSize: 20,
-    fontWeight: '600',
-    color: '#FFFFFF',
+    fontWeight: "600",
+    color: "#FFFFFF",
     marginBottom: 8,
   },
   welcomeSubtitle: {
     fontSize: 14,
-    color: '#ababab',
-    textAlign: 'center',
+    color: "#ababab",
+    textAlign: "center",
     lineHeight: 20,
   },
   inputContainer: {
-    flexDirection: 'row',
+    flexDirection: "row",
     paddingHorizontal: 16,
     paddingVertical: 12,
-    backgroundColor: '#141414',
-    alignItems: 'flex-end',
+    backgroundColor: "#141414",
+    alignItems: "flex-end",
   },
   inputWrapper: {
     flex: 1,
-    flexDirection: 'row',
-    backgroundColor: '#303030',
+    flexDirection: "row",
+    backgroundColor: "#303030",
     borderRadius: 24,
-    alignItems: 'flex-end',
+    alignItems: "flex-end",
     paddingHorizontal: 16,
     paddingVertical: 8,
     marginRight: 8,
@@ -257,7 +262,7 @@ const styles = StyleSheet.create({
   textInput: {
     flex: 1,
     fontSize: 16,
-    color: '#FFFFFF',
+    color: "#FFFFFF",
     maxHeight: 100,
     paddingVertical: 8,
   },
@@ -266,18 +271,18 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
   micButtonActive: {
-    backgroundColor: 'rgba(220, 38, 38, 0.1)',
+    backgroundColor: "rgba(220, 38, 38, 0.1)",
     borderRadius: 20,
   },
   sendButton: {
     width: 44,
     height: 44,
     borderRadius: 22,
-    backgroundColor: '#007AFF',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#007AFF",
+    alignItems: "center",
+    justifyContent: "center",
   },
   sendButtonDisabled: {
-    backgroundColor: '#505050',
+    backgroundColor: "#505050",
   },
 });

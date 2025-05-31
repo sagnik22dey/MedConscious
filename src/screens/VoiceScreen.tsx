@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -6,53 +6,53 @@ import {
   ScrollView,
   TouchableOpacity,
   SafeAreaView,
-} from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { MaterialIcon } from '../components/MaterialIcon';
-import { MicrophoneButton } from '../components/MicrophoneButton';
-import { useSpeechRecognition } from '../hooks/useSpeechRecognition';
-import { useAppContext } from '../context/AppContext';
-import { generateAIResponse, createMessage } from '../utils/aiResponses';
+} from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { MaterialIcon } from "../components/MaterialIcon";
+import { MicrophoneButton } from "../components/MicrophoneButton";
+import { useSpeechRecognition } from "../hooks/useSpeechRecognition";
+import { useAppContext } from "../context/AppContext";
+import { generateAIResponse, createMessage } from "../utils/aiResponses";
 
 export function VoiceScreen() {
   const navigation = useNavigation();
   const { state, dispatch } = useAppContext();
-  const [recordingStatus, setRecordingStatus] = useState('Tap to speak');
+  const [recordingStatus, setRecordingStatus] = useState("Tap to speak");
 
   const { isListening, hasPermission, toggle } = useSpeechRecognition({
     onResult: (result) => {
       handleVoiceResult(result.transcript);
     },
     onError: (error) => {
-      console.error('Speech recognition error:', error);
-      setRecordingStatus('Error occurred. Tap to try again.');
-      dispatch({ type: 'SET_RECORDING', payload: false });
+      console.error("Speech recognition error:", error);
+      setRecordingStatus("Error occurred. Tap to try again.");
+      dispatch({ type: "SET_RECORDING", payload: false });
     },
   });
 
   const handleVoiceResult = (transcript: string) => {
     // Add user message
-    const userMessage = createMessage(transcript, 'user');
-    dispatch({ type: 'ADD_MESSAGE', payload: userMessage });
+    const userMessage = createMessage(transcript, "user");
+    dispatch({ type: "ADD_MESSAGE", payload: userMessage });
 
     // Navigate to chat to show conversation
-    navigation.navigate('Chat' as never);
+    navigation.navigate("Chat" as never);
 
     // Generate AI response
     setTimeout(() => {
       const aiResponse = generateAIResponse(transcript);
-      const aiMessage = createMessage(aiResponse, 'ai');
-      dispatch({ type: 'ADD_MESSAGE', payload: aiMessage });
+      const aiMessage = createMessage(aiResponse, "ai");
+      dispatch({ type: "ADD_MESSAGE", payload: aiMessage });
     }, 1000);
   };
 
   const handleMicPress = () => {
     if (isListening) {
-      setRecordingStatus('Tap to speak');
-      dispatch({ type: 'SET_RECORDING', payload: false });
+      setRecordingStatus("Tap to speak");
+      dispatch({ type: "SET_RECORDING", payload: false });
     } else {
-      setRecordingStatus('Listening...');
-      dispatch({ type: 'SET_RECORDING', payload: true });
+      setRecordingStatus("Listening...");
+      dispatch({ type: "SET_RECORDING", payload: true });
     }
     toggle();
   };
@@ -71,16 +71,16 @@ export function VoiceScreen() {
             <MaterialIcon name="android" size={24} color="#FFFFFF" />
           </View>
         </View>
-        <Text style={styles.headerTitle}>Voice Assistant</Text>
-        <TouchableOpacity 
+        <Text style={styles.headerTitle}>Med-Conscious</Text>
+        <TouchableOpacity
           style={styles.headerRight}
-          onPress={() => navigation.navigate('Settings' as never)}
+          onPress={() => navigation.navigate("Settings" as never)}
         >
           <MaterialIcon name="settings" size={24} color="#FFFFFF" />
         </TouchableOpacity>
       </View>
 
-      <ScrollView 
+      <ScrollView
         style={styles.content}
         contentContainerStyle={styles.contentContainer}
         showsVerticalScrollIndicator={false}
@@ -115,15 +115,16 @@ export function VoiceScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#141414',
+    backgroundColor: "#141414",
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     paddingHorizontal: 20,
     paddingVertical: 16,
+    paddingTop: 35,
     borderBottomWidth: 1,
-    borderBottomColor: '#303030',
+    borderBottomColor: "#303030",
   },
   headerLeft: {
     width: 40,
@@ -132,50 +133,50 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: 16,
-    backgroundColor: '#505050',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#505050",
+    alignItems: "center",
+    justifyContent: "center",
   },
   headerTitle: {
     flex: 1,
     fontSize: 18,
-    fontWeight: '600',
-    color: '#FFFFFF',
-    textAlign: 'center',
+    fontWeight: "600",
+    color: "#FFFFFF",
+    textAlign: "center",
   },
   headerRight: {
     width: 40,
-    alignItems: 'flex-end',
+    alignItems: "flex-end",
   },
   content: {
     flex: 1,
   },
   contentContainer: {
     flexGrow: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
     paddingHorizontal: 20,
   },
   microphoneSection: {
-    alignItems: 'center',
+    alignItems: "center",
     marginBottom: 60,
   },
   recordingStatus: {
     fontSize: 16,
-    color: '#FFFFFF',
+    color: "#FFFFFF",
     marginTop: 20,
-    textAlign: 'center',
+    textAlign: "center",
   },
   suggestionsSection: {
-    alignItems: 'center',
+    alignItems: "center",
   },
   suggestionsTitle: {
     fontSize: 16,
-    color: '#ababab',
+    color: "#ababab",
     marginBottom: 20,
-    textAlign: 'center',
+    textAlign: "center",
   },
   suggestionItem: {
-    backgroundColor: '#303030',
+    backgroundColor: "#303030",
     paddingHorizontal: 20,
     paddingVertical: 12,
     borderRadius: 20,
@@ -184,7 +185,7 @@ const styles = StyleSheet.create({
   },
   suggestionText: {
     fontSize: 14,
-    color: '#FFFFFF',
-    textAlign: 'center',
+    color: "#FFFFFF",
+    textAlign: "center",
   },
 });
