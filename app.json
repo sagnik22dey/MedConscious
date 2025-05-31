@@ -1,22 +1,20 @@
 {
   "expo": {
-    "name": "MedConscious Voice Assistant",
-    "slug": "medconscious-voice-assistant",
+    "name": "MedConscious",
+    "slug": "medconscious",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/Med-logo1.jpeg",
     "userInterfaceStyle": "dark",
     "newArchEnabled": true,
     "primaryColor": "#141414",
     "backgroundColor": "#141414",
     "splash": {
-      "image": "./assets/splash-icon.png",
+      "image": "./assets/Med-logo1.jpeg",
       "resizeMode": "contain",
       "backgroundColor": "#141414"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.medconscious.voiceassistant",
@@ -27,7 +25,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/Med-logo1.jpeg",
         "backgroundColor": "#141414"
       },
       "edgeToEdgeEnabled": true,
@@ -38,7 +36,7 @@
       ]
     },
     "web": {
-      "favicon": "./assets/favicon.png",
+      "favicon": "./assets/Med-logo1.jpeg",
       "backgroundColor": "#141414"
     },
     "plugins": [

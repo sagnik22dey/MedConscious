@@ -9,6 +9,7 @@ import {
   SafeAreaView,
   KeyboardAvoidingView,
   Platform,
+  Image,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { MaterialIcon } from "../components/MaterialIcon";
@@ -87,11 +88,18 @@ export function ChatScreen() {
   const renderHeader = () => (
     <View style={styles.welcomeContainer}>
       <View style={styles.welcomeAvatar}>
-        <MaterialIcon name="android" size={32} color="#FFFFFF" />
+        {/* <MaterialIcon name="android" size={32} color="#FFFFFF" /> */}
+        <Image
+          source={require("../../assets/bot-logo-med.jpeg")}
+          style={styles.avatarImage}
+        />
       </View>
-      <Text style={styles.welcomeTitle}>AI Assistant</Text>
+
+      <Text style={styles.welcomeTitle}>Med-Conscious AI</Text>
       <Text style={styles.welcomeSubtitle}>
-        Hello! How can I assist you today? Type or use the mic.
+        Welcome to Med-Conscious Chat! Ask me anything about your health or get
+        advice on medical topics. I'm here to help you stay informed and
+        conscious about your well-being.
       </Text>
     </View>
   );
@@ -284,5 +292,10 @@ const styles = StyleSheet.create({
   },
   sendButtonDisabled: {
     backgroundColor: "#505050",
+  },
+  avatarImage: {
+    width: 50, // Set the desired width for your image
+    height: 50, // Set the desired height for your image
+    borderRadius: 25, // Make it circular
   },
 });
