@@ -1,0 +1,53 @@
+{
+  "expo": {
+    "name": "MedConscious Voice Assistant",
+    "slug": "medconscious-voice-assistant",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "newArchEnabled": true,
+    "primaryColor": "#141414",
+    "backgroundColor": "#141414",
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#141414"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.medconscious.voiceassistant",
+      "infoPlist": {
+        "NSMicrophoneUsageDescription": "This app needs access to the microphone to provide voice recognition features and enable voice commands.",
+        "NSSpeechRecognitionUsageDescription": "This app uses speech recognition to convert your voice commands into text for better interaction with the AI assistant."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#141414"
+      },
+      "edgeToEdgeEnabled": true,
+      "package": "com.medconscious.voiceassistant",
+      "permissions": [
+        "android.permission.RECORD_AUDIO",
+        "android.permission.MODIFY_AUDIO_SETTINGS"
+      ]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "backgroundColor": "#141414"
+    },
+    "plugins": [
+      [
+        "expo-av",
+        {
+          "microphonePermission": "Allow MedConscious to access your microphone for voice recognition features."
+        }
+      ]
+    ]
+  }
+}
