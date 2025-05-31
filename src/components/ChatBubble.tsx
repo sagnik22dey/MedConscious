@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Animated,
   TouchableOpacity,
+  Image,
 } from "react-native";
 import { MaterialIcon } from "./MaterialIcon";
 import { ChatMessage } from "../types";
@@ -60,7 +61,10 @@ export function ChatBubble({
     >
       {!isUser && (
         <View style={styles.aiAvatar}>
-          <MaterialIcon name="android" size={18} color="#FFFFFF" />
+          <Image
+            source={require("../../assets/bot-logo-med.jpeg")}
+            style={styles.avatarImage}
+          />
         </View>
       )}
 
@@ -259,5 +263,10 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     backgroundColor: "#FFFFFF",
     marginHorizontal: 2,
+  },
+  avatarImage: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
   },
 });

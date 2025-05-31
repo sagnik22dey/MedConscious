@@ -27,7 +27,8 @@ MedConscious/
 │   │   ├── AppNavigator.tsx       # Main stack navigator
 │   │   └── TabNavigator.tsx       # Bottom tab navigation
 │   ├── hooks/                  # Custom React hooks
-│   │   └── useSpeechRecognition.ts # Speech recognition logic
+│   │   ├── useSpeechRecognition.ts # Speech recognition logic
+│   │   └── useTextToSpeech.ts      # Text-to-speech functionality
 │   ├── context/                # React Context providers
 │   │   └── AppContext.tsx         # Global state management
 │   ├── types/                  # TypeScript definitions
@@ -38,6 +39,7 @@ MedConscious/
 ├── app.json                    # Expo configuration
 ├── package.json                # Dependencies and scripts
 ├── tsconfig.json               # TypeScript configuration
+├── test-voice.html             # Web-based voice testing interface
 ├── README.md                   # Documentation
 └── PROJECT_STRUCTURE.md        # This file
 
@@ -45,21 +47,29 @@ MedConscious/
 
 ## Key Features Implemented
 
-### 🎤 Voice Recognition
+### 🎤 Voice Recognition & Text-to-Speech
 
-- **File**: `src/hooks/useSpeechRecognition.ts`
-- **Features**: Speech-to-text, microphone permissions, error handling
-- **Components**: `MicrophoneButton.tsx` with pulse animations
+- **Files**: [`src/hooks/useSpeechRecognition.ts`](src/hooks/useSpeechRecognition.ts:1), [`src/hooks/useTextToSpeech.ts`](src/hooks/useTextToSpeech.ts:1)
+- **Features**:
+  - Speech-to-text with simulation mode for Expo Go
+  - Text-to-speech with customizable voice options
+  - Microphone permissions and error handling
+  - Audio playback controls and message tracking
+- **Components**: [`MicrophoneButton.tsx`](src/components/MicrophoneButton.tsx:1) with pulse animations
 
 ### 💬 Chat Interface
 
-- **File**: `src/screens/ChatScreen.tsx`
-- **Features**: Real-time messaging, typing indicators, voice input
-- **Components**: `ChatBubble.tsx` with slide animations
+- **File**: [`src/screens/ChatScreen.tsx`](src/screens/ChatScreen.tsx:1)
+- **Features**:
+  - Real-time messaging with voice input support
+  - Text-to-speech playback for AI responses
+  - Typing indicators and message animations
+  - Auto-scroll and message history
+- **Components**: [`ChatBubble.tsx`](src/components/ChatBubble.tsx:1) with slide animations
 
 ### 🧭 Navigation
 
-- **Files**: `src/navigation/AppNavigator.tsx`, `TabNavigator.tsx`
+- **Files**: [`src/navigation/AppNavigator.tsx`](src/navigation/AppNavigator.tsx:1), [`TabNavigator.tsx`](src/navigation/TabNavigator.tsx:1)
 - **Features**: Stack navigation, tab navigation, modal presentation
 
 ### 🎨 UI Components
@@ -70,14 +80,23 @@ MedConscious/
 
 ### 🔧 State Management
 
-- **File**: `src/context/AppContext.tsx`
+- **File**: [`src/context/AppContext.tsx`](src/context/AppContext.tsx:1)
 - **Pattern**: React Context + useReducer
-- **Features**: Recording states, message history, navigation state
+- **Features**: Recording states, message history, speech playback state, navigation state
 
 ### 🛡️ Error Handling
 
-- **File**: `src/components/ErrorBoundary.tsx`
+- **File**: [`src/components/ErrorBoundary.tsx`](src/components/ErrorBoundary.tsx:1)
 - **Features**: Graceful error recovery, development error details
+
+### 🧪 Testing Tools
+
+- **File**: [`test-voice.html`](test-voice.html:1)
+- **Features**:
+  - Web-based voice recognition testing
+  - Text-to-speech functionality testing
+  - Audio recording capabilities testing
+  - Cross-browser compatibility testing
 
 ## Development Workflow
 
@@ -145,15 +164,21 @@ npm run web        # Web browser
 
 ### Voice Recognition
 
-- **Current**: Mock implementation with simulated responses
-- **Future**: Integrate with real speech recognition services
-- **Location**: `src/hooks/useSpeechRecognition.ts`
+- **Current**: Expo Speech Recognition with simulation mode for development
+- **Future**: Real speech recognition in production builds
+- **Location**: [`src/hooks/useSpeechRecognition.ts`](src/hooks/useSpeechRecognition.ts:1)
+
+### Text-to-Speech
+
+- **Current**: Expo Speech with customizable voice options
+- **Features**: Language, pitch, rate, and voice customization
+- **Location**: [`src/hooks/useTextToSpeech.ts`](src/hooks/useTextToSpeech.ts:1)
 
 ### AI Responses
 
-- **Current**: Local response generation
-- **Future**: Connect to AI services (OpenAI, etc.)
-- **Location**: `src/utils/aiResponses.ts`
+- **Current**: Local response generation with speech output
+- **Future**: Connect to AI services (OpenAI, etc.) with voice synthesis
+- **Location**: [`src/utils/aiResponses.ts`](src/utils/aiResponses.ts:1)
 
 ## Testing Strategy
 
@@ -194,12 +219,16 @@ npm run web        # Web browser
 
 ### Features
 
-- [ ] Real speech recognition integration
+- [x] Text-to-speech functionality
+- [x] Voice testing interface
+- [ ] Real speech recognition in production builds
 - [ ] Cloud-based AI responses
 - [ ] User authentication
 - [ ] Message persistence
 - [ ] Voice training/customization
 - [ ] Multiple language support
+- [ ] Voice command shortcuts
+- [ ] Speech rate and pitch preferences
 
 ### Technical
 
@@ -209,9 +238,12 @@ npm run web        # Web browser
 - [ ] Push notifications
 - [ ] Offline capabilities
 - [ ] Background processing
+- [ ] Audio file caching
+- [ ] Voice recognition accuracy improvements
+- [ ] Cross-platform audio optimization
 
 ---
 
-**Last Updated**: Development Phase Complete
-**Version**: 1.0.0
-**Status**: Ready for Testing
+**Last Updated**: Enhanced with Text-to-Speech and Voice Testing
+**Version**: 1.1.0
+**Status**: Voice Features Complete - Ready for Production Build Testing

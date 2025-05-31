@@ -116,7 +116,7 @@ export function ChatScreen() {
       <View style={styles.welcomeAvatar}>
         {/* <MaterialIcon name="android" size={32} color="#FFFFFF" /> */}
         <Image
-          source={require("../../assets/bot-logo-med.jpeg")}
+          source={require("../../assets/Med-logo1.jpeg")}
           style={styles.avatarImage}
         />
       </View>
