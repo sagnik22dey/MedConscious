@@ -15,6 +15,7 @@ import { useNavigation } from "@react-navigation/native";
 import { MaterialIcon } from "../components/MaterialIcon";
 import { ChatBubble, TypingIndicator } from "../components/ChatBubble";
 import { useSpeechRecognition } from "../hooks/useSpeechRecognition";
+import { useTextToSpeech } from "../hooks/useTextToSpeech";
 import { useAppContext } from "../context/AppContext";
 import {
   generateAIResponse,
@@ -29,6 +30,8 @@ export function ChatScreen() {
   const [inputText, setInputText] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const flatListRef = useRef<FlatList>(null);
+
+  const { speak, isMessageSpeaking } = useTextToSpeech();
 
   const { isListening, toggle } = useSpeechRecognition({
     onResult: (result) => {
@@ -62,6 +65,9 @@ export function ChatScreen() {
     const userMessage = createMessage(message, "user");
     dispatch({ type: "ADD_MESSAGE", payload: userMessage });
 
+    // Speak user message
+    speak(message, userMessage.id, { pitch: 1.1, rate: 0.9 });
+
     // Clear input
     setInputText("");
 
@@ -74,6 +80,11 @@ export function ChatScreen() {
       const aiResponse = generateAIResponse(message);
       const aiMessage = createMessage(aiResponse, "ai");
       dispatch({ type: "ADD_MESSAGE", payload: aiMessage });
+
+      // Speak AI response with a slight delay
+      setTimeout(() => {
+        speak(aiResponse, aiMessage.id, { pitch: 0.9, rate: 0.8 });
+      }, 500);
     }, getTypingDuration());
   };
 
@@ -81,8 +92,23 @@ export function ChatScreen() {
     toggle();
   };
 
+  const handleSpeakMessage = (text: string, messageId: string) => {
+    const message = state.messages.find((msg) => msg.id === messageId);
+    if (message) {
+      const options =
+        message.sender === "user"
+          ? { pitch: 1.1, rate: 0.9 }
+          : { pitch: 0.9, rate: 0.8 };
+      speak(text, messageId, options);
+    }
+  };
+
   const renderMessage = ({ item }: { item: ChatMessage }) => (
-    <ChatBubble message={item} />
+    <ChatBubble
+      message={item}
+      onSpeakMessage={handleSpeakMessage}
+      isMessageSpeaking={isMessageSpeaking}
+    />
   );
 
   const renderHeader = () => (

@@ -28,12 +28,7 @@
         "foregroundImage": "./assets/Med-logo1.jpeg",
         "backgroundColor": "#141414"
       },
-      "edgeToEdgeEnabled": true,
-      "package": "com.medconscious.voiceassistant",
-      "permissions": [
-        "android.permission.RECORD_AUDIO",
-        "android.permission.MODIFY_AUDIO_SETTINGS"
-      ]
+      "package": "com.medconscious.voiceassistant"
     },
     "web": {
       "favicon": "./assets/Med-logo1.jpeg",
