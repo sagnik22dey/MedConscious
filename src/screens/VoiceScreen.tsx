@@ -19,18 +19,23 @@ export function VoiceScreen() {
   const { state, dispatch } = useAppContext();
   const [recordingStatus, setRecordingStatus] = useState("Tap to speak");
 
-  const { isListening, hasPermission, toggle } = useSpeechRecognition({
-    onResult: (result) => {
-      handleVoiceResult(result.transcript);
-    },
-    onError: (error) => {
-      console.error("Speech recognition error:", error);
-      setRecordingStatus("Error occurred. Tap to try again.");
-      dispatch({ type: "SET_RECORDING", payload: false });
-    },
-  });
+  const { isListening, hasPermission, toggle, speak, transcript, audioData } =
+    useSpeechRecognition({
+      onResult: (result) => {
+        console.log("Voice recognition result:", result.transcript);
+        handleVoiceResult(result.transcript);
+      },
+      onError: (error) => {
+        console.error("Speech recognition error:", error);
+        setRecordingStatus("Error occurred. Tap to try again.");
+        dispatch({ type: "SET_RECORDING", payload: false });
+      },
+    });
 
-  const handleVoiceResult = (transcript: string) => {
+  const handleVoiceResult = async (transcript: string) => {
+    console.log("Processing voice result:", transcript);
+    setRecordingStatus("Processing...");
+
     // Add user message
     const userMessage = createMessage(transcript, "user");
     dispatch({ type: "ADD_MESSAGE", payload: userMessage });
@@ -39,28 +44,50 @@ export function VoiceScreen() {
     navigation.navigate("Chat" as never);
 
     // Generate AI response
-    setTimeout(() => {
+    setTimeout(async () => {
       const aiResponse = generateAIResponse(transcript);
       const aiMessage = createMessage(aiResponse, "ai");
       dispatch({ type: "ADD_MESSAGE", payload: aiMessage });
+
+      // Speak the AI response using text-to-speech
+      try {
+        await speak(aiResponse);
+        console.log("AI response spoken successfully");
+      } catch (error) {
+        console.error("Error speaking AI response:", error);
+      }
     }, 1000);
+
+    setRecordingStatus("Tap to speak");
   };
 
   const handleMicPress = () => {
+    console.log(
+      "Microphone button pressed, current listening state:",
+      isListening
+    );
+
     if (isListening) {
-      setRecordingStatus("Tap to speak");
+      setRecordingStatus("Processing...");
       dispatch({ type: "SET_RECORDING", payload: false });
     } else {
-      setRecordingStatus("Listening...");
+      if (hasPermission === false) {
+        setRecordingStatus("Microphone permission required");
+        return;
+      }
+      setRecordingStatus("Listening... Speak now");
       dispatch({ type: "SET_RECORDING", payload: true });
     }
     toggle();
   };
 
   const suggestions = [
-    "What's the weather like?",
-    "Set a timer for 5 minutes",
-    "Tell me a joke",
+    "I have a headache, what should I do?",
+    "What are the symptoms of flu?",
+    "How can I improve my sleep?",
+    "What foods are good for heart health?",
+    "I feel stressed, any advice?",
+    "How much water should I drink daily?",
   ];
 
   return (
@@ -93,6 +120,28 @@ export function VoiceScreen() {
             disabled={hasPermission === false}
           />
           <Text style={styles.recordingStatus}>{recordingStatus}</Text>
+
+          {/* Show current transcript while listening */}
+          {transcript && (
+            <View style={styles.transcriptContainer}>
+              <Text style={styles.transcriptLabel}>Recognized:</Text>
+              <Text style={styles.transcriptText}>"{transcript}"</Text>
+            </View>
+          )}
+
+          {/* Show audio data info */}
+          {audioData && (
+            <Text style={styles.audioInfo}>
+              Audio recorded: {(audioData.length / 1024).toFixed(1)} KB
+            </Text>
+          )}
+
+          {/* Show permission status */}
+          {hasPermission === false && (
+            <Text style={styles.permissionWarning}>
+              Microphone permission required for voice recording
+            </Text>
+          )}
         </View>
 
         <View style={styles.suggestionsSection}>
@@ -165,6 +214,36 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     marginTop: 20,
     textAlign: "center",
+  },
+  transcriptContainer: {
+    marginTop: 20,
+    padding: 15,
+    backgroundColor: "#2a2a2a",
+    borderRadius: 10,
+    maxWidth: "90%",
+  },
+  transcriptLabel: {
+    fontSize: 12,
+    color: "#ababab",
+    marginBottom: 5,
+  },
+  transcriptText: {
+    fontSize: 14,
+    color: "#FFFFFF",
+    fontStyle: "italic",
+  },
+  audioInfo: {
+    fontSize: 12,
+    color: "#ababab",
+    marginTop: 10,
+    textAlign: "center",
+  },
+  permissionWarning: {
+    fontSize: 14,
+    color: "#ff6b6b",
+    marginTop: 15,
+    textAlign: "center",
+    fontWeight: "500",
   },
   suggestionsSection: {
     alignItems: "center",

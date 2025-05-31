@@ -45,7 +45,18 @@
         {
           "microphonePermission": "Allow MedConscious to access your microphone for voice recognition features."
         }
+      ],
+      [
+        "expo-speech-recognition",
+        {
+          "microphonePermission": "Allow MedConscious to access your microphone for voice recognition.",
+          "speechRecognitionPermission": "Allow MedConscious to use speech recognition.",
+          "androidSpeechServicePackages": [
+            "com.google.android.googlequicksearchbox"
+          ]
+        }
       ]
-    ]
+    ],
+    "permissions": ["RECORD_AUDIO", "MODIFY_AUDIO_SETTINGS", "MICROPHONE"]
   }
 }
